@@ -1,5 +1,98 @@
 models:
-  # ...
+  Visitor:
+    name: string
+    status: enum:checked_in,completed
+    phone: number required nullable
+    gender: enum:male,female,other
+    dob: date
+    description: text
+    visitor_date: date
+    visitor_payment: decimal:10,2
 
-controllers:
-  # ...
+  Patient:
+    patient_image: string
+    patient_before_image: string required
+    name: string
+    phone: number required nullable
+    email: string
+    gender: enum:male,female,other
+    dob: date
+    blood_type: enum:A+,A-,B+,B-,AB+,AB-,O+,O-
+    address: string
+    registered_date: date
+    payment_id: unsignedInteger nullable
+    appointment_id: unsignedInteger nullable
+    labreport_id: unsignedInteger nullable
+    relationships:
+      belongsToMany: Appointment, Payment
+      belongsTo: Doctor, LabReport
+
+  Doctor:
+    specialization_id: unsignedInteger nullable
+    doctor_image: string
+    name: string
+    email: string
+    phone: number required nullable
+    gender: enum:male,female,other
+    dob: date
+    years_of_experience: integer
+    address: string
+    appointment_id: unsignedInteger nullable
+    relationships:
+      belongsToMany: Appointment, Specialization
+      belongsTo: Patient
+
+  Appointment:
+    doctor_id: unsignedInteger nullable
+    patient_id: unsignedInteger nullable
+    appointment_payment_amount: decimal(10,2)
+    appointment_payment_status: enum:paid,unpaid
+    appointment_payment_mode: enum:online,offline
+    status: enum:booked,cancelled,completed
+    appointment_datetime: date
+    appointment_description: string
+    service_id: unsignedInteger nullable
+    relationships:
+      belongsToMany: Doctor, Patient, Payment, Service
+
+  Payment:
+    patient_id: unsignedInteger nullable
+    appointment_id: unsignedInteger nullable
+    service_id: unsignedInteger nullable
+    patient_initial_deposit: decimal(10,2)
+    total_service_charge_amount: decimal(10,2)
+    patient_total_amount_to_be_charged: decimal(10,2)
+    patients_total_appointment_amount_deposits: decimal(10,2)
+    patient_remaining_amount: decimal(10,2)
+    total_payments: decimal(10,2)
+    relationships:
+      belongsToMany: Patient, Appointment, Service
+
+  LabReport:
+    patient_id: unsignedInteger nullable
+    lab_report_name: string
+    lab_image: string
+    description: text
+    relationships:
+      hasMany: Patient
+
+  Service:
+    service_image_icon: string
+    service_name: string
+    service_amount: decimal(10,2)
+    service_description: text
+    relationships:
+      belongsToMany: Payment, Appointment
+
+  CompletedTreatment:
+    patient_id: unsignedInteger nullable
+    doctor_id: unsignedInteger nullable
+    treatment_name: string
+    payment_id: unsignedInteger nullable
+    relationships:
+      belongsToMany: Patient, Doctor
+
+  SpecializationTag:
+    name: string
+    relationships:
+      belongsToMany: Doctor
