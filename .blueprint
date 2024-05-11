@@ -7,26 +7,26 @@ created:
     - database/factories/LabReportFactory.php
     - database/factories/ServiceFactory.php
     - database/factories/CompletedTreatmentFactory.php
-    - database/factories/SpecializationTagFactory.php
-    - database/migrations/2024_05_11_064435_create_visitors_table.php
-    - database/migrations/2024_05_11_064436_create_patients_table.php
-    - database/migrations/2024_05_11_064437_create_doctors_table.php
-    - database/migrations/2024_05_11_064438_create_appointments_table.php
-    - database/migrations/2024_05_11_064439_create_payments_table.php
-    - database/migrations/2024_05_11_064440_create_lab_reports_table.php
-    - database/migrations/2024_05_11_064441_create_services_table.php
-    - database/migrations/2024_05_11_064442_create_completed_treatments_table.php
-    - database/migrations/2024_05_11_064443_create_specialization_tags_table.php
-    - database/migrations/2024_05_11_064444_create_patient_payment_table.php
-    - database/migrations/2024_05_11_064445_create_appointment_patient_table.php
-    - database/migrations/2024_05_11_064446_create_appointment_doctor_table.php
-    - database/migrations/2024_05_11_064447_create_doctor_specialization_table.php
-    - database/migrations/2024_05_11_064448_create_appointment_payment_table.php
-    - database/migrations/2024_05_11_064449_create_appointment_service_table.php
-    - database/migrations/2024_05_11_064450_create_payment_service_table.php
-    - database/migrations/2024_05_11_064451_create_completed_treatment_patient_table.php
-    - database/migrations/2024_05_11_064452_create_completed_treatment_doctor_table.php
-    - database/migrations/2024_05_11_064453_create_doctor_specialization_tag_table.php
+    - database/factories/SpecializationFactory.php
+    - database/migrations/2024_05_11_130331_create_visitors_table.php
+    - database/migrations/2024_05_11_130332_create_patients_table.php
+    - database/migrations/2024_05_11_130333_create_doctors_table.php
+    - database/migrations/2024_05_11_130334_create_appointments_table.php
+    - database/migrations/2024_05_11_130335_create_payments_table.php
+    - database/migrations/2024_05_11_130336_create_lab_reports_table.php
+    - database/migrations/2024_05_11_130337_create_services_table.php
+    - database/migrations/2024_05_11_130338_create_completed_treatments_table.php
+    - database/migrations/2024_05_11_130339_create_specializations_table.php
+    - database/migrations/2024_05_11_130340_create_patient_payment_table.php
+    - database/migrations/2024_05_11_130341_create_appointment_patient_table.php
+    - database/migrations/2024_05_11_130342_create_doctor_patient_table.php
+    - database/migrations/2024_05_11_130343_create_appointment_doctor_table.php
+    - database/migrations/2024_05_11_130344_create_doctor_specialization_table.php
+    - database/migrations/2024_05_11_130345_create_appointment_payment_table.php
+    - database/migrations/2024_05_11_130346_create_appointment_service_table.php
+    - database/migrations/2024_05_11_130347_create_payment_service_table.php
+    - database/migrations/2024_05_11_130348_create_completed_treatment_patient_table.php
+    - database/migrations/2024_05_11_130349_create_completed_treatment_doctor_table.php
     - app/Models/Visitor.php
     - app/Models/Patient.php
     - app/Models/Doctor.php
@@ -35,15 +35,15 @@ created:
     - app/Models/LabReport.php
     - app/Models/Service.php
     - app/Models/CompletedTreatment.php
-    - app/Models/SpecializationTag.php
+    - app/Models/Specialization.php
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
     Visitor: { name: string, status: 'enum:checked_in,completed', phone: 'number required nullable', gender: 'enum:male,female,other', dob: date, description: text, visitor_date: date, visitor_payment: 'decimal:10,2' }
-    Patient: { patient_image: 'string nullable', patient_before_image: 'string required nullable', name: string, phone: 'number required', email: 'string nullable', gender: 'enum:male,female,other', dob: date, blood_type: 'nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-', address: 'string nullable', registered_date: date, payment_id: 'unsignedInteger nullable', appointment_id: 'unsignedInteger nullable', relationships: { belongsToMany: 'Payment, Appointment', hasMany: 'Doctor, LabReport' } }
-    Doctor: { specialization_id: 'unsignedInteger nullable', doctor_image: 'string nullable', name: string, email: 'string nullable', phone: 'number required', gender: 'enum:male,female,other', dob: date, years_of_experience: integer, address: string, appointment_id: 'unsignedInteger nullable', relationships: { belongsToMany: 'Appointment, Specialization', belongsTo: Patient } }
-    Appointment: { doctor_id: 'unsignedInteger nullable', patient_id: 'unsignedInteger nullable', appointment_payment_amount: 'decimal(10,2)', appointment_payment_status: 'enum:paid,unpaid', appointment_payment_mode: 'enum:online,offline', status: 'enum:booked,cancelled,completed', appointment_datetime: date, appointment_description: string, service_id: 'unsignedInteger nullable', relationships: { belongsToMany: 'Doctor, Patient, Payment, Service' } }
-    Payment: { patient_id: 'unsignedInteger nullable', appointment_id: 'unsignedInteger nullable', service_id: 'unsignedInteger nullable', patient_initial_deposit: 'decimal(10,2)', total_service_charge_amount: 'decimal(10,2)', patient_total_amount_to_be_charged: 'decimal(10,2)', patients_total_appointment_amount_deposits: 'decimal(10,2)', patient_remaining_amount: 'decimal(10,2)', total_payments: 'decimal(10,2)', relationships: { belongsToMany: 'Patient, Appointment, Service' } }
-    LabReport: { patient_id: 'unsignedInteger nullable', lab_report_name: string, lab_image: string, description: text, relationships: { hasMany: Patient } }
-    Service: { service_image_icon: string, service_name: string, service_amount: 'decimal(10,2)', service_description: text, relationships: { belongsToMany: 'Payment, Appointment' } }
+    Patient: { patient_image: 'string nullable', patient_before_image: 'string required nullable', name: string, phone: 'number required', email: 'string nullable', gender: 'enum:male,female,other', dob: date, blood_type: 'nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-', address: 'string nullable', registered_date: date, relationships: { belongsToMany: 'Payment, Appointment, Doctor', belongsTo: LabReport } }
+    Doctor: { specialization_id: 'unsignedInteger nullable', doctor_image: 'string nullable', name: string, email: 'string nullable', phone: 'number required', gender: 'enum:male,female,other', dob: date, years_of_experience: integer, address: string, relationships: { belongsToMany: 'Appointment, Specialization, Patient' } }
+    Appointment: { doctor_id: 'unsignedInteger nullable', patient_id: 'unsignedInteger nullable', service_id: 'unsignedInteger nullable', status: 'enum:booked,cancelled,completed', appointment_datetime: date, appointment_description: string, relationships: { belongsToMany: 'Doctor, Patient, Payment, Service' } }
+    Payment: { patient_id: 'unsignedInteger nullable', appointment_id: 'unsignedInteger nullable', patient_total_amount_to_be_paid: 'decimal(10,2) nullable', patient_initial_deposit: 'decimal(10,2) nullable', appointment_payment_amount: 'decimal(10,2) nullable', appointment_payment_status: 'nullable enum:paid,unpaid', appointment_payment_mode: 'nullable enum:online,offline', total_service_charge_amount: 'decimal(10,2) nullable', patients_total_appointment_amount_deposits: 'decimal(10,2) nullable', patient_remaining_amount: 'decimal(10,2)', total_payments: 'decimal(10,2)', relationships: { belongsToMany: 'Patient, Appointment, Service' } }
+    LabReport: { patient_id: 'unsignedInteger nullable', lab_report_name: string, lab_image: string, description: string, relationships: { hasMany: Patient } }
+    Service: { service_image: string, service_name: string, service_amount: 'decimal(10,2)', service_description: string, relationships: { belongsToMany: 'Payment, Appointment' } }
     CompletedTreatment: { patient_id: 'unsignedInteger nullable', doctor_id: 'unsignedInteger nullable', treatment_name: string, payment_id: 'unsignedInteger nullable', relationships: { belongsToMany: 'Patient, Doctor' } }
-    SpecializationTag: { name: string, relationships: { belongsToMany: Doctor } }
+    Specialization: { name: string, relationships: { belongsToMany: Doctor } }

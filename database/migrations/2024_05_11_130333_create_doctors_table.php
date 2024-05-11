@@ -22,8 +22,6 @@ return new class extends Migration
             $table->date('dob');
             $table->integer('years_of_experience');
             $table->string('address');
-            $table->unsignedInteger('appointment_id')->nullable();
-            $table->foreignId('patient_id');
             $table->timestamps();
         });
     }

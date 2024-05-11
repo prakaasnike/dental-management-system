@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Filament\Resources\CompletedTreatmentResource\Pages;
+
+use App\Filament\Resources\CompletedTreatmentResource;
+use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
+
+class ListCompletedTreatments extends ListRecords
+{
+    protected static string $resource = CompletedTreatmentResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
+}

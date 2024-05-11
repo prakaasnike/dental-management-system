@@ -23,8 +23,7 @@ return new class extends Migration
             $table->enum('blood_type', ["A+","A-","B+","B-","AB+","AB-","O+","O-"])->nullable();
             $table->string('address')->nullable();
             $table->date('registered_date');
-            $table->unsignedInteger('payment_id')->nullable();
-            $table->unsignedInteger('appointment_id')->nullable();
+            $table->foreignId('lab_report_id');
             $table->timestamps();
         });
     }

@@ -21,10 +21,10 @@ class ServiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'service_image_icon' => $this->faker->word(),
+            'service_image' => $this->faker->word(),
             'service_name' => $this->faker->word(),
             'service_amount' => $this->faker->word(),
-            'service_description' => $this->faker->text(),
+            'service_description' => $this->faker->word(),
         ];
     }
 }

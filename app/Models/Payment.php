@@ -18,10 +18,12 @@ class Payment extends Model
     protected $fillable = [
         'patient_id',
         'appointment_id',
-        'service_id',
+        'patient_total_amount_to_be_paid',
         'patient_initial_deposit',
+        'appointment_payment_amount',
+        'appointment_payment_status',
+        'appointment_payment_mode',
         'total_service_charge_amount',
-        'patient_total_amount_to_be_charged',
         'patients_total_appointment_amount_deposits',
         'patient_remaining_amount',
         'total_payments',
@@ -36,7 +38,6 @@ class Payment extends Model
         'id' => 'integer',
         'patient_id' => 'integer',
         'appointment_id' => 'integer',
-        'service_id' => 'integer',
     ];
 
     public function patients(): BelongsToMany

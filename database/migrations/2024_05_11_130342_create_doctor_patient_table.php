@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
-            $table->id();
-            $table->string('service_image_icon');
-            $table->string('service_name');
-            $table->string('service_amount');
-            $table->text('service_description');
-            $table->timestamps();
+        Schema::create('doctor_patient', function (Blueprint $table) {
+            $table->foreignId('doctor_id');
+            $table->foreignId('patient_id');
         });
     }
 
@@ -26,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('doctor_patient');
     }
 };

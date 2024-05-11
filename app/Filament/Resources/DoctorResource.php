@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PatientResource\Pages;
-use App\Filament\Resources\PatientResource\RelationManagers;
-use App\Models\Patient;
+use App\Filament\Resources\DoctorResource\Pages;
+use App\Filament\Resources\DoctorResource\RelationManagers;
+use App\Models\Doctor;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -14,11 +14,10 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Log;
 
-class PatientResource extends Resource
+class DoctorResource extends Resource
 {
-    protected static ?string $model = Patient::class;
+    protected static ?string $model = Doctor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -26,18 +25,20 @@ class PatientResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Patient Details')
-                    ->description('Fill in patient information')
+                Section::make('Doctor details')
+                    ->description('Comprehensive Doctor Information')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->unique()
+                            ->maxLength(255),
                         Forms\Components\TextInput::make('phone')
                             ->tel()
                             ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->email()
+                            ->unique()
                             ->maxLength(255),
                         Forms\Components\ToggleButtons::make('gender')
                             ->required()
@@ -50,53 +51,30 @@ class PatientResource extends Resource
                         Forms\Components\DatePicker::make('dob')
                             ->native(false)
                             ->required(),
-                        Forms\Components\ToggleButtons::make('blood_type')
-                            ->inline()
-                            ->options([
-                                'A+' => 'A+',
-                                'A-' => 'A-',
-                                'B+' => 'B+',
-                                'B-' => 'B-',
-                                'AB+' => 'AB+',
-                                'AB-' => 'AB-',
-                                'O+' => 'O+',
-                                'O-' => 'O-',
-                            ]),
+                        Forms\Components\TextInput::make('years_of_experience')
+                            ->required()
+                            ->numeric(),
                         Forms\Components\TextInput::make('address')
+                            ->required()
                             ->maxLength(255),
-                    ])
-                    ->columnSpan(2)->columns(2),
+                    ])->columnSpan(2)->columns(2),
                 Group::make()->schema([
-                    Section::make("Patient Profile")
+                    Section::make("Doctor Avatar")
                         ->collapsible()
                         ->schema([
-                            Forms\Components\FileUpload::make('patient_image')
+                            Forms\Components\FileUpload::make('doctor_image')
                                 ->label('Image')
-                                ->image()
-                                ->preserveFilenames()
-                                ->imagePreviewHeight('40')
-                                ->maxSize(512 * 512 * 2),
+                                ->avatar()
+                                ->image(),
                         ])->columnSpan(1),
-                    Section::make("Before Treatment")
-                        ->collapsible()
+                    Section::make("Specialization")
                         ->schema([
-                            Forms\Components\FileUpload::make('patient_before_image')
-                                ->label('Image')
-                                ->image()
-                                ->preserveFilenames()
-                                ->imagePreviewHeight('40')
-                                ->maxSize(512 * 512 * 2),
+                            Forms\Components\Select::make('specialization')
+                                ->relationship('specializations', 'name')
+                                ->multiple(),
                         ]),
                 ]),
-                Section::make("Patient Registration Date")
-                    ->schema([
-                        Forms\Components\DatePicker::make('registered_date')
-                            ->label('Date')
-                            ->required(),
-                    ])->columnSpan(2),
-
-            ])
-            ->columns([
+            ])->columns([
                 'default' => 3,
                 'sm' => 3,
                 'md' => 3,
@@ -104,47 +82,38 @@ class PatientResource extends Resource
             ]);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('patient_image')
-                    ->label('Patient Image')
-                    ->circular()
-                    ->defaultImageUrl(function ($record) {
-                        // Generate random name for the avatar
-                        $name = $record->name ?: 'Unknown';
-                        // Construct the URL with the random name
-                        return 'https://api.dicebear.com/8.x/initials/svg?seed=' . urlencode($name);
-                    }),
-                Tables\Columns\ImageColumn::make('patient_before_image')
-                    ->label('Before Image')
-                    ->circular()
+                Tables\Columns\TextColumn::make('specializations.name')
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ImageColumn::make('doctor_image')
+                    ->label('Profile')
                     ->defaultImageUrl(function ($record) {
                         $name = $record->name ?: 'Unknown';
                         // Use DiceBear Avatars API for generating avatars
                         return 'https://api.dicebear.com/8.x/bottts/svg?seed=' . urlencode($name);
                     }),
-                Tables\Columns\TextColumn::make('phone')
+                Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('gender'),
                 Tables\Columns\TextColumn::make('dob')
                     ->date()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('blood_type'),
+                Tables\Columns\TextColumn::make('years_of_experience')
+                    ->label('Experience')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('address')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('registered_date')
-                    ->date()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -164,7 +133,6 @@ class PatientResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-
             ]);
     }
 
@@ -178,9 +146,9 @@ class PatientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPatients::route('/'),
-            'create' => Pages\CreatePatient::route('/create'),
-            'edit' => Pages\EditPatient::route('/{record}/edit'),
+            'index' => Pages\ListDoctors::route('/'),
+            'create' => Pages\CreateDoctor::route('/create'),
+            'edit' => Pages\EditDoctor::route('/{record}/edit'),
         ];
     }
 }

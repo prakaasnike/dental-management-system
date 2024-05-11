@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Patient extends Model
 {
@@ -27,8 +27,7 @@ class Patient extends Model
         'blood_type',
         'address',
         'registered_date',
-        'payment_id',
-        'appointment_id',
+        'lab_report_id',
     ];
 
     /**
@@ -40,8 +39,7 @@ class Patient extends Model
         'id' => 'integer',
         'dob' => 'date',
         'registered_date' => 'date',
-        'payment_id' => 'integer',
-        'appointment_id' => 'integer',
+        'lab_report_id' => 'integer',
     ];
 
     public function payments(): BelongsToMany
@@ -54,13 +52,13 @@ class Patient extends Model
         return $this->belongsToMany(Appointment::class);
     }
 
-    public function doctors(): HasMany
+    public function doctors(): BelongsToMany
     {
-        return $this->hasMany(Doctor::class);
+        return $this->belongsToMany(Doctor::class);
     }
 
-    public function labReports(): HasMany
+    public function labReport(): BelongsTo
     {
-        return $this->hasMany(LabReport::class);
+        return $this->belongsTo(LabReport::class);
     }
 }

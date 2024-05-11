@@ -20,11 +20,9 @@ models:
     blood_type: nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-
     address: string nullable
     registered_date: date
-    payment_id: unsignedInteger nullable
-    appointment_id: unsignedInteger nullable
     relationships:
-      belongsToMany: Payment, Appointment
-      hasMany: Doctor, LabReport
+      belongsToMany: Payment, Appointment, Doctor
+      belongsTo: LabReport
 
   Doctor:
     specialization_id: unsignedInteger nullable
@@ -36,32 +34,29 @@ models:
     dob: date
     years_of_experience: integer
     address: string
-    appointment_id: unsignedInteger nullable
     relationships:
-      belongsToMany: Appointment, Specialization
-      belongsTo: Patient
+      belongsToMany: Appointment, Specialization, Patient
 
   Appointment:
     doctor_id: unsignedInteger nullable
     patient_id: unsignedInteger nullable
-    appointment_payment_amount: decimal(10,2)
-    appointment_payment_status: enum:paid,unpaid
-    appointment_payment_mode: enum:online,offline
+    service_id: unsignedInteger nullable
     status: enum:booked,cancelled,completed
     appointment_datetime: date
     appointment_description: string
-    service_id: unsignedInteger nullable
     relationships:
       belongsToMany: Doctor, Patient, Payment, Service
 
   Payment:
     patient_id: unsignedInteger nullable
     appointment_id: unsignedInteger nullable
-    service_id: unsignedInteger nullable
-    patient_initial_deposit: decimal(10,2)
-    total_service_charge_amount: decimal(10,2)
-    patient_total_amount_to_be_charged: decimal(10,2)
-    patients_total_appointment_amount_deposits: decimal(10,2)
+    patient_total_amount_to_be_paid: decimal(10,2) nullable
+    patient_initial_deposit: decimal(10,2) nullable
+    appointment_payment_amount: decimal(10,2) nullable
+    appointment_payment_status: nullable enum:paid,unpaid
+    appointment_payment_mode: nullable enum:online,offline
+    total_service_charge_amount: decimal(10,2) nullable
+    patients_total_appointment_amount_deposits: decimal(10,2) nullable
     patient_remaining_amount: decimal(10,2)
     total_payments: decimal(10,2)
     relationships:
@@ -70,16 +65,16 @@ models:
   LabReport:
     patient_id: unsignedInteger nullable
     lab_report_name: string
+    description: string
     lab_image: string
-    description: text
     relationships:
       hasMany: Patient
 
   Service:
-    service_image_icon: string
     service_name: string
     service_amount: decimal(10,2)
-    service_description: text
+    service_description: string nullable
+    service_image: string nullable
     relationships:
       belongsToMany: Payment, Appointment
 
@@ -91,7 +86,7 @@ models:
     relationships:
       belongsToMany: Patient, Doctor
 
-  SpecializationTag:
+  Specialization:
     name: string
     relationships:
       belongsToMany: Doctor

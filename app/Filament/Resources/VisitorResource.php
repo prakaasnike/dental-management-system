@@ -74,6 +74,14 @@ class VisitorResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Names')
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('visitor_image')
+                    ->label('Avatar')
+                    ->circular()
+                    ->defaultImageUrl(function ($record) {
+                        $name = $record->name ?: 'Unknown';
+                        // Use DiceBear Avatars API for generating avatars
+                        return 'https://api.dicebear.com/8.x/bottts/svg?seed=' . urlencode($name);
+                    }),
                 Tables\Columns\TextColumn::make('status'),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),

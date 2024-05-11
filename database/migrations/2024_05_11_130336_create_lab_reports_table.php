@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedInteger('patient_id')->nullable();
             $table->string('lab_report_name');
             $table->string('lab_image');
-            $table->text('description');
+            $table->string('description');
             $table->timestamps();
         });
     }

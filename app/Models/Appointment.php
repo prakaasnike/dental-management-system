@@ -18,13 +18,10 @@ class Appointment extends Model
     protected $fillable = [
         'doctor_id',
         'patient_id',
-        'appointment_payment_amount',
-        'appointment_payment_status',
-        'appointment_payment_mode',
+        'service_id',
         'status',
         'appointment_datetime',
         'appointment_description',
-        'service_id',
     ];
 
     /**
@@ -36,8 +33,8 @@ class Appointment extends Model
         'id' => 'integer',
         'doctor_id' => 'integer',
         'patient_id' => 'integer',
-        'appointment_datetime' => 'date',
         'service_id' => 'integer',
+        'appointment_datetime' => 'date',
     ];
 
     public function doctors(): BelongsToMany

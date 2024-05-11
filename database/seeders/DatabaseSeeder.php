@@ -9,7 +9,7 @@ use App\Models\LabReport;
 use App\Models\Patient;
 use App\Models\Payment;
 use App\Models\Service;
-use App\Models\SpecializationTag;
+use App\Models\Specialization;
 use App\Models\User;
 use App\Models\Visitor;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -38,6 +38,6 @@ class DatabaseSeeder extends Seeder
         LabReport::factory()->count(10)->create();
         Service::factory()->count(10)->create();
         CompletedTreatment::factory()->count(10)->create();
-        SpecializationTag::factory()->count(10)->create();
+        Specialization::factory()->count(10)->create();
     }
 }

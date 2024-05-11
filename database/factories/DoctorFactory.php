@@ -5,7 +5,6 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Doctor;
-use App\Models\Patient;
 
 class DoctorFactory extends Factory
 {
@@ -31,8 +30,6 @@ class DoctorFactory extends Factory
             'dob' => $this->faker->date(),
             'years_of_experience' => $this->faker->numberBetween(-10000, 10000),
             'address' => $this->faker->word(),
-            'appointment_id' => $this->faker->randomNumber(),
-            'patient_id' => Patient::factory(),
         ];
     }
 }
