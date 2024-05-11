@@ -10,29 +10,28 @@ models:
     visitor_payment: decimal:10,2
 
   Patient:
-    patient_image: string
-    patient_before_image: string required
+    patient_image: string nullable
+    patient_before_image: string required nullable
     name: string
-    phone: number required nullable
-    email: string
+    phone: number required
+    email: string nullable
     gender: enum:male,female,other
     dob: date
-    blood_type: enum:A+,A-,B+,B-,AB+,AB-,O+,O-
-    address: string
+    blood_type: nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-
+    address: string nullable
     registered_date: date
     payment_id: unsignedInteger nullable
     appointment_id: unsignedInteger nullable
-    labreport_id: unsignedInteger nullable
     relationships:
-      belongsToMany: Appointment, Payment
-      belongsTo: Doctor, LabReport
+      belongsToMany: Payment, Appointment
+      hasMany: Doctor, LabReport
 
   Doctor:
     specialization_id: unsignedInteger nullable
-    doctor_image: string
+    doctor_image: string nullable
     name: string
-    email: string
-    phone: number required nullable
+    email: string nullable
+    phone: number required
     gender: enum:male,female,other
     dob: date
     years_of_experience: integer

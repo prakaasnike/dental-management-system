@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Patient extends Model
 {
@@ -29,9 +29,6 @@ class Patient extends Model
         'registered_date',
         'payment_id',
         'appointment_id',
-        'labreport_id',
-        'doctor_id',
-        'lab_report_id',
     ];
 
     /**
@@ -45,28 +42,25 @@ class Patient extends Model
         'registered_date' => 'date',
         'payment_id' => 'integer',
         'appointment_id' => 'integer',
-        'labreport_id' => 'integer',
-        'doctor_id' => 'integer',
-        'lab_report_id' => 'integer',
     ];
-
-    public function appointments(): BelongsToMany
-    {
-        return $this->belongsToMany(Appointment::class);
-    }
 
     public function payments(): BelongsToMany
     {
         return $this->belongsToMany(Payment::class);
     }
 
-    public function doctor(): BelongsTo
+    public function appointments(): BelongsToMany
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsToMany(Appointment::class);
     }
 
-    public function labReport(): BelongsTo
+    public function doctors(): HasMany
     {
-        return $this->belongsTo(LabReport::class);
+        return $this->hasMany(Doctor::class);
+    }
+
+    public function labReports(): HasMany
+    {
+        return $this->hasMany(LabReport::class);
     }
 }

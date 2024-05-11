@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('doctors', function (Blueprint $table) {
+        Schema::create('patients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('specialization_id')->nullable();
-            $table->string('doctor_image');
+            $table->string('patient_image')->nullable();
+            $table->string('patient_before_image')->nullable();
             $table->string('name');
-            $table->string('email');
-            $table->string('phone')->nullable();
+            $table->string('phone');
+            $table->string('email')->nullable();
             $table->enum('gender', ["male","female","other"]);
             $table->date('dob');
-            $table->integer('years_of_experience');
-            $table->string('address');
+            $table->enum('blood_type', ["A+","A-","B+","B-","AB+","AB-","O+","O-"])->nullable();
+            $table->string('address')->nullable();
+            $table->date('registered_date');
+            $table->unsignedInteger('payment_id')->nullable();
             $table->unsignedInteger('appointment_id')->nullable();
-            $table->foreignId('patient_id');
             $table->timestamps();
         });
     }
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('doctors');
+        Schema::dropIfExists('patients');
     }
 };

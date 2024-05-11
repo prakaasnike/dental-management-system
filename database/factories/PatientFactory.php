@@ -4,8 +4,6 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Doctor;
-use App\Models\LabReport;
 use App\Models\Patient;
 
 class PatientFactory extends Factory
@@ -35,9 +33,6 @@ class PatientFactory extends Factory
             'registered_date' => $this->faker->date(),
             'payment_id' => $this->faker->randomNumber(),
             'appointment_id' => $this->faker->randomNumber(),
-            'labreport_id' => $this->faker->randomNumber(),
-            'doctor_id' => Doctor::factory(),
-            'lab_report_id' => LabReport::factory(),
         ];
     }
 }
