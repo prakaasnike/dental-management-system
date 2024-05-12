@@ -24,7 +24,12 @@ class LabReportFactory extends Factory
             'patient_id' => $this->faker->randomNumber(),
             'lab_report_name' => $this->faker->word(),
             'description' => $this->faker->text(),
-            'lab_image' => $this->faker->word(),
+            'lab_image' => $this->faker->imageUrl(function ($record) {
+                // Generate random name for the avatar
+                $name = $record->name ?: 'Unknown';
+                // Construct the URL with the random name
+                return 'https://api.dicebear.com/8.x/initials/svg?seed=' . urlencode($name);
+            }),
         ];
     }
 }

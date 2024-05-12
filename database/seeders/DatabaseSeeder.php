@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
         Payment::factory()->count(5)->create();
         LabReport::factory()->count(5)->create();
         Service::factory()->count(5)->create();
-        CompletedTreatment::factory()->count(10)->create();
+        CompletedTreatment::factory()->count(5)->create();
         Specialization::factory()->count(5)->create();
     }
 }

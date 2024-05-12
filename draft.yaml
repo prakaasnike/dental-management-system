@@ -44,7 +44,8 @@ models:
     appointment_datetime: date
     status: enum:booked,cancelled,completed
     service_id: unsignedInteger nullable
-    appointment_amount: decimal(10,2)
+    appointment_amount: decimal(10,2) nullable
+    appointment_payment_status: nullable enum:paid,unpaid
     appointment_description: string
     relationships:
       belongsToMany: Doctor, Patient, Payment, Service
@@ -55,7 +56,6 @@ models:
     patient_total_amount_to_be_paid: decimal(10,2) nullable
     patient_initial_deposit: decimal(10,2) nullable
     appointment_payment_amount: decimal(10,2) nullable
-    appointment_payment_status: nullable enum:paid,unpaid
     appointment_payment_mode: nullable enum:online,offline
     total_service_charge_amount: decimal(10,2) nullable
     patients_total_appointment_amount_deposits: decimal(10,2) nullable
