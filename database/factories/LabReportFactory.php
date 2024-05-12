@@ -23,8 +23,8 @@ class LabReportFactory extends Factory
         return [
             'patient_id' => $this->faker->randomNumber(),
             'lab_report_name' => $this->faker->word(),
-            'lab_image' => $this->faker->word(),
             'description' => $this->faker->text(),
+            'lab_image' => $this->faker->word(),
         ];
     }
 }

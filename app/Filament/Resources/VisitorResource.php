@@ -53,15 +53,16 @@ class VisitorResource extends Resource
                     ->native(false)
                     ->weekStartsOnSunday()
                     ->closeOnDateSelection(),
-                Forms\Components\Textarea::make('description')
-                    ->label('Visitor Treatment Description')
-                    ->required(),
+
                 Forms\Components\DatePicker::make('visitor_date')
                     ->required()
                     ->native(false)
                     ->default('Y')
                     ->weekStartsOnSunday()
                     ->closeOnDateSelection(),
+                Forms\Components\Textarea::make('description')
+                    ->label('Visitor Treatment Description')
+                    ->required(),
                 Forms\Components\TextInput::make('visitor_payment')
                     ->required()
 

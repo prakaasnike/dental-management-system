@@ -18,8 +18,8 @@ class LabReport extends Model
     protected $fillable = [
         'patient_id',
         'lab_report_name',
-        'lab_image',
         'description',
+        'lab_image',
     ];
 
     /**

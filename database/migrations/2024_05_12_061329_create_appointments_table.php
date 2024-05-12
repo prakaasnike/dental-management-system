@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lab_reports', function (Blueprint $table) {
+        Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedInteger('doctor_id')->nullable();
             $table->unsignedInteger('patient_id')->nullable();
-            $table->string('lab_report_name');
-            $table->string('lab_image');
-            $table->string('description');
+            $table->unsignedInteger('service_id')->nullable();
+            $table->date('appointment_datetime');
+            $table->string('appointment_description');
+            $table->enum('status', ["booked","cancelled","completed"]);
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lab_reports');
+        Schema::dropIfExists('appointments');
     }
 };

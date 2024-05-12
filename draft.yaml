@@ -41,9 +41,9 @@ models:
     doctor_id: unsignedInteger nullable
     patient_id: unsignedInteger nullable
     service_id: unsignedInteger nullable
-    status: enum:booked,cancelled,completed
     appointment_datetime: date
     appointment_description: string
+    status: enum:booked,cancelled,completed
     relationships:
       belongsToMany: Doctor, Patient, Payment, Service
 

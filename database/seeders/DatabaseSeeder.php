@@ -30,14 +30,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create 50  records using the Factory
-        Visitor::factory()->count(10)->create();
-        Patient::factory()->count(10)->create();
-        Doctor::factory()->count(10)->create();
-        Appointment::factory()->count(10)->create();
-        Payment::factory()->count(10)->create();
-        LabReport::factory()->count(10)->create();
-        Service::factory()->count(10)->create();
+        Visitor::factory()->count(5)->create();
+        Patient::factory()->count(5)->create();
+        Doctor::factory()->count(5)->create();
+        Appointment::factory()->count(5)->create();
+        Payment::factory()->count(5)->create();
+        LabReport::factory()->count(5)->create();
+        Service::factory()->count(5)->create();
         CompletedTreatment::factory()->count(10)->create();
-        Specialization::factory()->count(10)->create();
+        Specialization::factory()->count(5)->create();
     }
 }
