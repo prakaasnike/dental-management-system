@@ -34,10 +34,15 @@ class PatientResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('phone')
-                            ->tel()
                             ->required()
-                            ->maxLength(255),
+                            ->prefix('+977')
+                            ->unique(ignoreRecord: true)
+                            ->tel()
+                            ->numeric()
+                            ->telRegex('/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\.\/0-9]*$/')
+                            ->maxLength(10),
                         Forms\Components\TextInput::make('email')
+                            ->unique(ignoreRecord: true)
                             ->email()
                             ->maxLength(255),
                         Forms\Components\ToggleButtons::make('gender')
@@ -65,6 +70,10 @@ class PatientResource extends Resource
                             ]),
                         Forms\Components\TextInput::make('address')
                             ->maxLength(255),
+                        Forms\Components\DatePicker::make('registered_date')
+                            ->native(false)
+                            ->label('Registration Date')
+                            ->required(),
                     ])
                     ->columnSpan(2)->columns(2),
                 Group::make()->schema([
@@ -75,7 +84,7 @@ class PatientResource extends Resource
                                 ->label('Image')
                                 ->image()
                                 ->preserveFilenames()
-                                ->imagePreviewHeight('40')
+                                ->imagePreviewHeight('90')
                                 ->maxSize(512 * 512 * 2),
                         ])->columnSpan(1),
                     Section::make("Before Treatment")
@@ -85,16 +94,14 @@ class PatientResource extends Resource
                                 ->label('Image')
                                 ->image()
                                 ->preserveFilenames()
-                                ->imagePreviewHeight('40')
+                                ->imagePreviewHeight('90')
                                 ->maxSize(512 * 512 * 2),
                         ]),
                 ]),
-                Section::make("Patient Registration Date")
-                    ->schema([
-                        Forms\Components\DatePicker::make('registered_date')
-                            ->label('Date')
-                            ->required(),
-                    ])->columnSpan(2),
+                // Section::make("Patient Registration Date")
+                //     ->schema([
+                //      //extra form
+                //     ])->columnSpan(2),
 
             ])
             ->columns([
@@ -113,7 +120,7 @@ class PatientResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('patient_image')
-                    ->label('Patient Image')
+                    ->label('Image')
                     ->circular()
                     ->defaultImageUrl(function ($record) {
                         // Generate random name for the avatar

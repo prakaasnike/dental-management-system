@@ -23,10 +23,11 @@ class AppointmentFactory extends Factory
         return [
             'doctor_id' => $this->faker->randomNumber(),
             'patient_id' => $this->faker->randomNumber(),
-            'service_id' => $this->faker->randomNumber(),
             'appointment_datetime' => $this->faker->date(),
-            'appointment_description' => $this->faker->word(),
             'status' => $this->faker->randomElement(["booked","cancelled","completed"]),
+            'service_id' => $this->faker->randomNumber(),
+            'appointment_amount' => $this->faker->word(),
+            'appointment_description' => $this->faker->word(),
         ];
     }
 }

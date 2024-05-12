@@ -34,16 +34,18 @@ models:
     dob: date
     years_of_experience: integer
     address: string
+    doctor_registration_number: integer nullable
     relationships:
       belongsToMany: Appointment, Specialization, Patient
 
   Appointment:
     doctor_id: unsignedInteger nullable
     patient_id: unsignedInteger nullable
-    service_id: unsignedInteger nullable
     appointment_datetime: date
-    appointment_description: string
     status: enum:booked,cancelled,completed
+    service_id: unsignedInteger nullable
+    appointment_amount: decimal(10,2)
+    appointment_description: string
     relationships:
       belongsToMany: Doctor, Patient, Payment, Service
 
@@ -66,7 +68,7 @@ models:
     patient_id: unsignedInteger nullable
     lab_report_name: string
     description: string
-    lab_image: string
+    lab_image: string nullable
     relationships:
       hasMany: Patient
 

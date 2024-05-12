@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('doctor_id')->nullable();
             $table->unsignedInteger('patient_id')->nullable();
-            $table->unsignedInteger('service_id')->nullable();
             $table->date('appointment_datetime');
-            $table->string('appointment_description');
             $table->enum('status', ["booked","cancelled","completed"]);
+            $table->unsignedInteger('service_id')->nullable();
+            $table->string('appointment_amount');
+            $table->string('appointment_description');
             $table->timestamps();
         });
     }

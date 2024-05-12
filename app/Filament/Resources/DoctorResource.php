@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DoctorResource\Pages;
 use App\Filament\Resources\DoctorResource\RelationManagers;
 use App\Models\Doctor;
+use App\Models\Specialization;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -25,6 +26,7 @@ class DoctorResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $specializations = Specialization::all()->pluck('name', 'id');
         return $form
             ->schema([
                 Section::make('Doctor details')
@@ -73,7 +75,8 @@ class DoctorResource extends Resource
                         ->schema([
                             Forms\Components\Select::make('specialization')
                                 ->relationship('specializations', 'name')
-                                ->multiple(),
+                                ->multiple()
+                                ->options($specializations),
                         ]),
                 ]),
             ])->columns([
