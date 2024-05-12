@@ -15,9 +15,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class SpecializationResource extends Resource
 {
+    protected static ?int $navigationSort = 10;
+
+    protected static ?string $navigationGroup = 'Settings';
     protected static ?string $model = Specialization::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-bolt';
 
     public static function form(Form $form): Form
     {

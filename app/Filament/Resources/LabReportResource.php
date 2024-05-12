@@ -18,9 +18,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LabReportResource extends Resource
 {
+    protected static ?int $navigationSort = 9;
+
+    protected static ?string $navigationGroup = 'Settings';
     protected static ?string $model = LabReport::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-beaker';
 
     public static function form(Form $form): Form
     {

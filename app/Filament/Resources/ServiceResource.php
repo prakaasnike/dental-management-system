@@ -19,6 +19,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ServiceResource extends Resource
 {
+    protected static ?int $navigationSort = 8;
+
+    protected static ?string $navigationGroup = 'Settings';
     protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
