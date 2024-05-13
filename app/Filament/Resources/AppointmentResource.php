@@ -8,7 +8,10 @@ use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Service;
+use App\Models\Treatment;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,44 +32,81 @@ class AppointmentResource extends Resource
     {
         $doctors = Doctor::all()->pluck('name', 'id');
         $patients = Patient::all()->pluck('name', 'id');
+        $treatments = Treatment::all()->pluck('name', 'id');
         $services = Service::all()->pluck('service_name', 'id');
 
         return $form
             ->schema([
-                Forms\Components\Select::make('patient_id')
-                    ->label('Patients')
-                    ->relationship('patients', 'name')
-                    ->options($patients)
-                    ->searchable(),
-                Forms\Components\Select::make('doctor_id')
-                    ->label('Doctors')
-                    ->relationship('doctors', 'name')
-                    ->options($doctors)
-                    ->searchable(),
-                Forms\Components\DatePicker::make('appointment_datetime')
-                    ->label('Appointment Date')
-                    ->native(false)
-                    ->required(),
-                Forms\Components\TextInput::make('status')
-                    ->required(),
-                Forms\Components\Select::make('service_id')
-                    ->label('Services')
-                    ->relationship('services', 'service_name')
-                    ->multiple()
-                    ->options($services),
-                Forms\Components\TextInput::make('appointment_amount')
-                    ->label('Amount')
-                    ->numeric()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('appointment_payment_status')
-                    ->label('Appointment Payement Status')
-                    ->required(),
-                // Forms\Components\TextInput::make('appointment_payment_mode')
-                //     ->required(),
-                Forms\Components\TextInput::make('appointment_description')
-                    ->label('Appointment Description')
-                    ->maxLength(255),
+                Section::make('Make an Appointment')
+                    ->description('Create an appointment for your patients')
+                    ->schema([
+                        Forms\Components\Select::make('patient_id')
+                            ->relationship('patient', 'name')
+                            ->required()
+                            ->label('Patients')
+                            ->options($patients)
+                            ->searchable(),
+                        Forms\Components\Select::make('doctor_id')
+                            ->relationship('doctor', 'name')
+                            ->label('Doctors')
+                            ->options($doctors)
+                            ->searchable(),
+                        Forms\Components\Select::make('treatments')
+                            ->relationship('treatments', 'name')
+                            ->label('Treatments')
+                            ->multiple()
+                            ->options($treatments),
+                        Forms\Components\Select::make('services')
+                            ->relationship('services', 'service_name')
+                            ->label('Services')
+                            ->multiple()
+                            ->options($services),
+                        Forms\Components\TextInput::make('appointment_amount')
+                            ->prefix('Rs')
+                            ->label('Amount')
+                            ->numeric()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('appointment_description')
+                            ->label('Appointment Description')
+                            ->maxLength(255),
+                    ])
+                    ->columnSpan(2)
+                    ->columns(2),
+                Group::make()
+                    ->schema([
+                        Section::make("Choose")
+                            ->collapsible()
+                            ->schema([
+                                Forms\Components\DatePicker::make('appointment_datetime')
+                                    ->label('Appointment Date')
+                                    ->native(false)
+                                    ->required(),
+                                Forms\Components\ToggleButtons::make('status')
+                                    ->inline()
+                                    ->required()
+                                    ->options([
+                                        'booked' => 'Booked',
+                                        'reschedule' => 'Reschedule',
+                                        'cancelled' => 'Cancelled',
+                                        'completed' => 'Completed',
+                                    ]),
+                                Forms\Components\ToggleButtons::make('appointment_payment_status')
+                                    ->label('Appointment Payment Status')
+                                    ->inline()
+                                    ->required()
+                                    ->options([
+                                        'paid' => 'Paid',
+                                        'unpaid' => 'Unpaid',
+                                    ])
+                                    ->columnSpan(1),
+                            ]),
 
+                    ]),
+            ])
+            ->columns([
+                'default' => 3,
+                'md' => 3,
+                'lg' => 3,
             ]);
     }
 
@@ -82,7 +122,7 @@ class AppointmentResource extends Resource
                     ->label('Doctors')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('appointment_datetime')
-                    ->label('Appointment Date')
+                    ->label('Appointment')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),
@@ -93,6 +133,7 @@ class AppointmentResource extends Resource
                 // Tables\Columns\TextColumn::make('appointment_description')
                 //     ->label('Description'),
                 Tables\Columns\TextColumn::make('appointment_amount')
+                    ->money('NPR')
                     ->label('Amount')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('appointment_payment_status')
