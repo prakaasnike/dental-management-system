@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Filament\Resources\PatientResource\RelationManagers;
 use App\Models\Patient;
+use App\Models\Service;
 use App\Models\Treatment;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
@@ -27,6 +28,7 @@ class PatientResource extends Resource
     public static function form(Form $form): Form
     {
         $treatments = Treatment::all()->pluck('name', 'id');
+        $services = Service::all()->pluck('service_name', 'id');
 
         return $form
             ->schema([
@@ -78,8 +80,10 @@ class PatientResource extends Resource
                             ->relationship('treatments', 'name')
                             ->multiple()
                             ->options($treatments),
-                        Forms\Components\TextInput::make('service_id')
-                            ->maxLength(255),
+                        Forms\Components\Select::make('services')
+                            ->relationship('services', 'service_name')
+                            ->multiple()
+                            ->options($services),
                         Forms\Components\TextInput::make('initial_amount')
                             ->prefix('Rs')
                             ->maxLength(255),
