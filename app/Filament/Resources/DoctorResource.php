@@ -53,18 +53,14 @@ class DoctorResource extends Resource
                                 'other' => 'Other',
                             ]),
                         Forms\Components\DatePicker::make('dob')
-                            ->native(false)
-                            ->required(),
+                            ->native(false),
                         Forms\Components\TextInput::make('years_of_experience')
-                            ->required()
                             ->numeric(),
                         Forms\Components\TextInput::make('address')
-                            ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('doctor_registration_number')
                             ->label('Doctor Registration Number')
-                            ->required()
-                            ->numeric(),
+                            ->maxLength(50),
                     ])->columnSpan(2)->columns(2),
                 Group::make()->schema([
                     Section::make("Doctor Avatar")
@@ -77,7 +73,7 @@ class DoctorResource extends Resource
                         ])->columnSpan(1),
                     Section::make("Specialization")
                         ->schema([
-                            Forms\Components\Select::make('specialization')
+                            Forms\Components\Select::make('specializations')
                                 ->relationship('specializations', 'name')
                                 ->multiple()
                                 ->options($specializations),
