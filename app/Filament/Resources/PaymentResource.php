@@ -30,18 +30,11 @@ class PaymentResource extends Resource
                     ->numeric(),
                 Forms\Components\TextInput::make('appointment_id')
                     ->numeric(),
+                Forms\Components\TextInput::make('treatment_id')
+                    ->numeric(),
                 Forms\Components\TextInput::make('service_id')
                     ->numeric(),
-                Forms\Components\TextInput::make('patient_initial_deposit')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('total_service_charge_amount')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('patient_total_amount_to_be_charged')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('patients_total_appointment_amount_deposits')
+                Forms\Components\TextInput::make('total_appointment_amount_deposits')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('patient_remaining_amount')
@@ -49,6 +42,8 @@ class PaymentResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('total_payments')
                     ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('status')
                     ->maxLength(255),
             ]);
     }
@@ -58,25 +53,30 @@ class PaymentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('patient_id')
+                    ->label('Patient')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('appointment_id')
+                // Tables\Columns\TextColumn::make('appointment_id')
+                //     ->label('Appointment')
+                //     ->numeric()
+                //     ->sortable(),
+                Tables\Columns\TextColumn::make('treatment_id')
+                    ->label('Treatment Amount')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('service_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('patient_initial_deposit')
+                    ->label('Service Amount')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('total_service_charge_amount')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('patient_total_amount_to_be_charged')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('patients_total_appointment_amount_deposits')
+                Tables\Columns\TextColumn::make('total_appointment_amount_deposits')
+                    ->label('Total Appointment Amount')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('patient_remaining_amount')
+                    ->label('Remaining Amount')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('total_payments')
+                    ->label('Total Amount')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
