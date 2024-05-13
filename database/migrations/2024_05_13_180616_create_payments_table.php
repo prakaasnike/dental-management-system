@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('total_treatment_charge_amount')->nullable();
             $table->string('total_service_charge_amount')->nullable();
             $table->string('total_appointment_amount_deposits')->nullable();
-            $table->string('total_patient_remaining_amount_to_be_paid')->nullable();
             $table->string('patient_remaining_amount');
             $table->string('total_payments');
+            $table->enum('status', ["paid","unpaid"])->nullable();
             $table->timestamps();
         });
     }

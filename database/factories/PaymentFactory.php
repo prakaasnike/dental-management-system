@@ -26,9 +26,9 @@ class PaymentFactory extends Factory
             'total_treatment_charge_amount' => $this->faker->word(),
             'total_service_charge_amount' => $this->faker->word(),
             'total_appointment_amount_deposits' => $this->faker->word(),
-            'total_patient_remaining_amount_to_be_paid' => $this->faker->word(),
             'patient_remaining_amount' => $this->faker->word(),
             'total_payments' => $this->faker->word(),
+            'status' => $this->faker->randomElement(["paid","unpaid"]),
         ];
     }
 }

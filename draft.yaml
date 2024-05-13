@@ -17,7 +17,7 @@ models:
     email: string nullable
     gender: enum:male,female,other
     dob: date
-    blood_type: nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-,N/A
+    blood_type: nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-,None
     address: string nullable
     registered_date: date
     treatment_id: unsignedInteger nullable

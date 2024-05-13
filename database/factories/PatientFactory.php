@@ -29,7 +29,7 @@ class PatientFactory extends Factory
             'email' => $this->faker->safeEmail(),
             'gender' => $this->faker->randomElement(["male","female","other"]),
             'dob' => $this->faker->date(),
-            'blood_type' => $this->faker->randomElement(["A+","A-","B+","B-","AB+","AB-","O+","O-"]),
+            'blood_type' => $this->faker->randomElement(["A+","A-","B+","B-","AB+","AB-","O+","O-","None"]),
             'address' => $this->faker->word(),
             'registered_date' => $this->faker->date(),
             'treatment_id' => $this->faker->randomNumber(),

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('gender', ["male","female","other"]);
             $table->date('dob');
             $table->integer('years_of_experience');
-            $table->string('address');
+            $table->string('address')->nullable();
             $table->string('doctor_registration_number')->nullable();
             $table->timestamps();
         });

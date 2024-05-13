@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('email')->nullable();
-            $table->enum('gender', ["male", "female", "other"]);
+            $table->enum('gender', ["male","female","other"]);
             $table->date('dob');
-            $table->enum('blood_type', ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "N/A"])->nullable();
+            $table->enum('blood_type', ["A+","A-","B+","B-","AB+","AB-","O+","O-","None"])->nullable();
             $table->string('address')->nullable();
             $table->date('registered_date');
             $table->unsignedInteger('treatment_id')->nullable();

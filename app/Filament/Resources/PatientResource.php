@@ -72,7 +72,7 @@ class PatientResource extends Resource
                                 'AB-' => 'AB-',
                                 'O+' => 'O+',
                                 'O-' => 'O-',
-                                'N/A' => 'N/A',
+                                'None' => 'None',
                             ]),
                         Forms\Components\TextInput::make('address')
                             ->maxLength(255),

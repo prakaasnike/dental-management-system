@@ -41,13 +41,12 @@ class AppointmentResource extends Resource
                     ->description('Create an appointment for your patients')
                     ->schema([
                         Forms\Components\Select::make('patient_id')
-                            ->relationship('patient', 'name')
-                            ->required()
+                            ->relationship('patients', 'name')
                             ->label('Patients')
                             ->options($patients)
                             ->searchable(),
                         Forms\Components\Select::make('doctor_id')
-                            ->relationship('doctor', 'name')
+                            ->relationship('doctors', 'name')
                             ->label('Doctors')
                             ->options($doctors)
                             ->searchable(),

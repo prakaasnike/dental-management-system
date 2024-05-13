@@ -21,9 +21,9 @@ class Payment extends Model
         'total_treatment_charge_amount',
         'total_service_charge_amount',
         'total_appointment_amount_deposits',
-        'total_patient_remaining_amount_to_be_paid',
         'patient_remaining_amount',
         'total_payments',
+        'status',
     ];
 
     /**
