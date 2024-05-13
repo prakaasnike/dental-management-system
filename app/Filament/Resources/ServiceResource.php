@@ -31,7 +31,7 @@ class ServiceResource extends Resource
         return $form
             ->schema([
                 Section::make('Create a service for your patients')
-                    ->description('Craft Personalized Care: Easy Service Creation for Patients')
+                    ->description('Craft Personalized Care For Patients')
                     ->schema([
                         Components\TextInput::make('service_name')
                             ->required()
@@ -54,9 +54,11 @@ class ServiceResource extends Resource
                                 ->preserveFilenames()
                                 ->imagePreviewHeight('175')
                                 ->maxSize(512 * 512 * 2),
-                        ])->columnSpan(1),
+                        ])
+                        ->columnSpan(1),
                 ]),
-            ])->columns([
+            ])
+            ->columns([
                 'default' => 3,
                 'sm' => 3,
                 'md' => 3,
