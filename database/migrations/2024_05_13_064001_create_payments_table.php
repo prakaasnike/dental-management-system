@@ -15,13 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedInteger('patient_id')->nullable();
             $table->unsignedInteger('appointment_id')->nullable();
-            $table->string('patient_total_amount_to_be_paid')->nullable();
-            $table->string('patient_initial_deposit')->nullable();
-            $table->string('appointment_payment_amount')->nullable();
-            $table->enum('appointment_payment_status', ["paid","unpaid"])->nullable();
-            $table->enum('appointment_payment_mode', ["online","offline"])->nullable();
+            $table->string('total_treatment_charge_amount')->nullable();
             $table->string('total_service_charge_amount')->nullable();
-            $table->string('patients_total_appointment_amount_deposits')->nullable();
+            $table->string('total_appointment_amount_deposits')->nullable();
+            $table->string('total_patient_remaining_amount_to_be_paid')->nullable();
             $table->string('patient_remaining_amount');
             $table->string('total_payments');
             $table->timestamps();

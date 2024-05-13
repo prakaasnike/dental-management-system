@@ -18,13 +18,10 @@ class Payment extends Model
     protected $fillable = [
         'patient_id',
         'appointment_id',
-        'patient_total_amount_to_be_paid',
-        'patient_initial_deposit',
-        'appointment_payment_amount',
-        'appointment_payment_status',
-        'appointment_payment_mode',
+        'total_treatment_charge_amount',
         'total_service_charge_amount',
-        'patients_total_appointment_amount_deposits',
+        'total_appointment_amount_deposits',
+        'total_patient_remaining_amount_to_be_paid',
         'patient_remaining_amount',
         'total_payments',
     ];

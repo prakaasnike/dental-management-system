@@ -23,8 +23,9 @@ class CompletedTreatmentFactory extends Factory
         return [
             'patient_id' => $this->faker->randomNumber(),
             'doctor_id' => $this->faker->randomNumber(),
-            'treatment_name' => $this->faker->word(),
-            'payment_id' => $this->faker->randomNumber(),
+            'treatment_id' => $this->faker->word(),
+            'service_id' => $this->faker->randomNumber(),
+            'completed_treatment_date' => $this->faker->randomNumber(),
         ];
     }
 }

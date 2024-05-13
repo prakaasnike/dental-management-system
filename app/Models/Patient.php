@@ -27,6 +27,10 @@ class Patient extends Model
         'blood_type',
         'address',
         'registered_date',
+        'treatment_id',
+        'service_id',
+        'medical_issues',
+        'initial_amount',
         'lab_report_id',
     ];
 
@@ -39,6 +43,9 @@ class Patient extends Model
         'id' => 'integer',
         'dob' => 'date',
         'registered_date' => 'date',
+        'treatment_id' => 'integer',
+        'service_id' => 'integer',
+        'initial_amount' => 'decimal:2',
         'lab_report_id' => 'integer',
     ];
 
@@ -55,6 +62,16 @@ class Patient extends Model
     public function doctors(): BelongsToMany
     {
         return $this->belongsToMany(Doctor::class);
+    }
+
+    public function services(): BelongsToMany
+    {
+        return $this->belongsToMany(Service::class);
+    }
+
+    public function treatments(): BelongsToMany
+    {
+        return $this->belongsToMany(Treatment::class);
     }
 
     public function labReport(): BelongsTo

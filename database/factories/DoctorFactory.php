@@ -30,6 +30,7 @@ class DoctorFactory extends Factory
             'dob' => $this->faker->date(),
             'years_of_experience' => $this->faker->numberBetween(-10000, 10000),
             'address' => $this->faker->word(),
+            'doctor_registration_number' => $this->faker->word(),
         ];
     }
 }

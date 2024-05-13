@@ -19,13 +19,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ServiceResource extends Resource
 {
-    protected static ?int $navigationSort = 8;
+    protected static ?int $navigationSort = 9;
 
     protected static ?string $navigationGroup = 'Settings';
     protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    // 'service_amount' => MoneyCast::class, in service modal
     public static function form(Form $form): Form
     {
         return $form
@@ -37,8 +37,10 @@ class ServiceResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Components\TextInput::make('service_amount')
+                            ->numeric()
+                            ->prefix('Rs')
                             ->required()
-                            ->maxLength(255),
+                            ->maxValue(42949672.95),
                         Components\Textarea::make('service_description')
                             ->required()
                             ->columnSpanFull(),
@@ -76,6 +78,7 @@ class ServiceResource extends Resource
                         return 'https://api.dicebear.com/8.x/bottts/svg?seed=' . urlencode($name);
                     }),
                 Tables\Columns\TextColumn::make('service_amount')
+                    ->money('NPR')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

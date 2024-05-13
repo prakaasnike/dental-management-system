@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Specialization extends Model
+class Treatment extends Model
 {
     use HasFactory;
 
@@ -17,7 +17,8 @@ class Specialization extends Model
      */
     protected $fillable = [
         'name',
-        'doctor_id',
+        'treatment_price',
+        'dental_treatment_description',
     ];
 
     /**
@@ -27,11 +28,15 @@ class Specialization extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'doctor_id' => 'integer',
     ];
 
-    public function doctor(): BelongsTo
+    public function patients(): BelongsToMany
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsToMany(Patient::class);
+    }
+
+    public function appointments(): BelongsToMany
+    {
+        return $this->belongsToMany(Appointment::class);
     }
 }

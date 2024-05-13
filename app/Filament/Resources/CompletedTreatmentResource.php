@@ -16,8 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class CompletedTreatmentResource extends Resource
 {
     protected static ?int $navigationSort = 6;
-
-    protected static ?string $navigationGroup = 'Appointments & Treatment';
     protected static ?string $model = CompletedTreatment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-check-circle';

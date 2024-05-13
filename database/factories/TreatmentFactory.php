@@ -4,17 +4,16 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
-use App\Models\Doctor;
-use App\Models\Specialization;
+use App\Models\Treatment;
 
-class SpecializationFactory extends Factory
+class TreatmentFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Specialization::class;
+    protected $model = Treatment::class;
 
     /**
      * Define the model's default state.
@@ -23,7 +22,8 @@ class SpecializationFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'doctor_id' => Doctor::factory(),
+            'treatment_price' => $this->faker->word(),
+            'dental_treatment_description' => $this->faker->word(),
         ];
     }
 }

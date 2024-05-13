@@ -20,8 +20,11 @@ class Appointment extends Model
         'patient_id',
         'appointment_datetime',
         'status',
+        'treatment_id',
         'service_id',
         'appointment_amount',
+        'appointment_payment_status',
+        'appointment_payment_mode',
         'appointment_description',
     ];
 
@@ -35,6 +38,7 @@ class Appointment extends Model
         'doctor_id' => 'integer',
         'patient_id' => 'integer',
         'appointment_datetime' => 'date',
+        'treatment_id' => 'integer',
         'service_id' => 'integer',
     ];
 
@@ -56,5 +60,10 @@ class Appointment extends Model
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class);
+    }
+
+    public function treatments(): BelongsToMany
+    {
+        return $this->belongsToMany(Treatment::class);
     }
 }

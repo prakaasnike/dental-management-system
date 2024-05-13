@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('dob');
             $table->integer('years_of_experience');
             $table->string('address');
+            $table->string('doctor_registration_number')->nullable();
             $table->timestamps();
         });
     }

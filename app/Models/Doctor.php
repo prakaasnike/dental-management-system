@@ -25,6 +25,7 @@ class Doctor extends Model
         'dob',
         'years_of_experience',
         'address',
+        'doctor_registration_number',
     ];
 
     /**

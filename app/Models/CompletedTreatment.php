@@ -18,8 +18,9 @@ class CompletedTreatment extends Model
     protected $fillable = [
         'patient_id',
         'doctor_id',
-        'treatment_name',
-        'payment_id',
+        'treatment_id',
+        'service_id',
+        'completed_treatment_date',
     ];
 
     /**
@@ -31,7 +32,8 @@ class CompletedTreatment extends Model
         'id' => 'integer',
         'patient_id' => 'integer',
         'doctor_id' => 'integer',
-        'payment_id' => 'integer',
+        'service_id' => 'integer',
+        'completed_treatment_date' => 'integer',
     ];
 
     public function patients(): BelongsToMany

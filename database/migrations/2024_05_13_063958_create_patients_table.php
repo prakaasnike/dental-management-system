@@ -18,11 +18,15 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('email')->nullable();
-            $table->enum('gender', ["male","female","other"]);
+            $table->enum('gender', ["male", "female", "other"]);
             $table->date('dob');
-            $table->enum('blood_type', ["A+","A-","B+","B-","AB+","AB-","O+","O-"])->nullable();
+            $table->enum('blood_type', ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-", "N/A"])->nullable();
             $table->string('address')->nullable();
             $table->date('registered_date');
+            $table->unsignedInteger('treatment_id')->nullable();
+            $table->unsignedInteger('service_id')->nullable();
+            $table->string('medical_issues')->nullable();
+            $table->decimal('initial_amount', 10, 2);
             $table->foreignId('lab_report_id');
             $table->timestamps();
         });

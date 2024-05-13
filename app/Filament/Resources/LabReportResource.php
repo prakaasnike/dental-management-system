@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class LabReportResource extends Resource
 {
-    protected static ?int $navigationSort = 9;
+    protected static ?int $navigationSort = 10;
 
     protected static ?string $navigationGroup = 'Settings';
     protected static ?string $model = LabReport::class;

@@ -32,6 +32,10 @@ class PatientFactory extends Factory
             'blood_type' => $this->faker->randomElement(["A+","A-","B+","B-","AB+","AB-","O+","O-"]),
             'address' => $this->faker->word(),
             'registered_date' => $this->faker->date(),
+            'treatment_id' => $this->faker->randomNumber(),
+            'service_id' => $this->faker->randomNumber(),
+            'medical_issues' => $this->faker->word(),
+            'initial_amount' => $this->faker->randomFloat(2, 0, 99999999.99),
             'lab_report_id' => LabReport::factory(),
         ];
     }

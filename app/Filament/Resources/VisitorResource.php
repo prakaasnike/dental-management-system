@@ -61,7 +61,7 @@ class VisitorResource extends Resource
                     ->weekStartsOnSunday()
                     ->closeOnDateSelection(),
                 Forms\Components\Textarea::make('description')
-                    ->label('Visitor Treatment Description')
+                    ->label('Treatment Description')
                     ->required(),
                 Forms\Components\TextInput::make('visitor_payment')
                     ->required()

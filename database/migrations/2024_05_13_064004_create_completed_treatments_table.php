@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('lab_reports', function (Blueprint $table) {
+        Schema::create('completed_treatments', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('patient_id')->nullable();
-            $table->string('lab_report_name');
-            $table->string('description');
-            $table->string('lab_image');
+            $table->unsignedInteger('doctor_id')->nullable();
+            $table->string('treatment_id');
+            $table->unsignedInteger('service_id')->nullable();
+            $table->unsignedInteger('completed_treatment_date')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lab_reports');
+        Schema::dropIfExists('completed_treatments');
     }
 };

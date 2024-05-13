@@ -40,4 +40,9 @@ class Service extends Model
     {
         return $this->belongsToMany(Appointment::class);
     }
+
+    public function patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class);
+    }
 }

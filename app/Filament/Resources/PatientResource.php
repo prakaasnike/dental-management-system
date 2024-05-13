@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PatientResource\Pages;
 use App\Filament\Resources\PatientResource\RelationManagers;
 use App\Models\Patient;
+use App\Models\Treatment;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
@@ -25,6 +26,8 @@ class PatientResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     public static function form(Form $form): Form
     {
+        $treatments = Treatment::all()->pluck('name', 'id');
+
         return $form
             ->schema([
                 Section::make('Patient Details')
@@ -67,16 +70,35 @@ class PatientResource extends Resource
                                 'AB-' => 'AB-',
                                 'O+' => 'O+',
                                 'O-' => 'O-',
+                                'N/A' => 'N/A',
                             ]),
                         Forms\Components\TextInput::make('address')
                             ->maxLength(255),
-                        Forms\Components\DatePicker::make('registered_date')
-                            ->native(false)
-                            ->label('Registration Date')
-                            ->required(),
+                        Forms\Components\Select::make('treatments')
+                            ->relationship('treatments', 'name')
+                            ->multiple()
+                            ->options($treatments),
+                        Forms\Components\TextInput::make('service_id')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('initial_amount')
+                            ->prefix('Rs')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('medical_issues')
+                            ->label('If any medical issue describe below ?')
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+
+
                     ])
                     ->columnSpan(2)->columns(2),
                 Group::make()->schema([
+                    Section::make("Registration Date")
+                        ->schema([
+                            Forms\Components\DatePicker::make('registered_date')
+                                ->native(false)
+                                ->label('Date')
+                                ->required(),
+                        ])->columnSpan(1),
                     Section::make("Patient Profile")
                         ->collapsible()
                         ->schema([
@@ -86,7 +108,7 @@ class PatientResource extends Resource
                                 ->preserveFilenames()
                                 ->imagePreviewHeight('90')
                                 ->maxSize(512 * 512 * 2),
-                        ])->columnSpan(1),
+                        ]),
                     Section::make("Before Treatment")
                         ->collapsible()
                         ->schema([
@@ -98,11 +120,6 @@ class PatientResource extends Resource
                                 ->maxSize(512 * 512 * 2),
                         ]),
                 ]),
-                // Section::make("Patient Registration Date")
-                //     ->schema([
-                //      //extra form
-                //     ])->columnSpan(2),
-
             ])
             ->columns([
                 'default' => 3,

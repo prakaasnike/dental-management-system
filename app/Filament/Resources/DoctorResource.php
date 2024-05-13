@@ -61,6 +61,10 @@ class DoctorResource extends Resource
                         Forms\Components\TextInput::make('address')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('doctor_registration_number')
+                            ->label('Doctor Registration Number')
+                            ->required()
+                            ->numeric(),
                     ])->columnSpan(2)->columns(2),
                 Group::make()->schema([
                     Section::make("Doctor Avatar")
@@ -118,7 +122,10 @@ class DoctorResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('address')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('doctor_registration_number')
+                    ->label('Registration'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

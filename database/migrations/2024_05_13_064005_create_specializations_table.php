@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('completed_treatments', function (Blueprint $table) {
+        Schema::create('specializations', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('patient_id')->nullable();
-            $table->unsignedInteger('doctor_id')->nullable();
-            $table->string('treatment_name');
-            $table->unsignedInteger('payment_id')->nullable();
+            $table->string('name');
+            $table->foreignId('doctor_id');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('completed_treatments');
+        Schema::dropIfExists('specializations');
     }
 };

@@ -25,8 +25,11 @@ class AppointmentFactory extends Factory
             'patient_id' => $this->faker->randomNumber(),
             'appointment_datetime' => $this->faker->date(),
             'status' => $this->faker->randomElement(["booked","cancelled","completed"]),
+            'treatment_id' => $this->faker->randomNumber(),
             'service_id' => $this->faker->randomNumber(),
             'appointment_amount' => $this->faker->word(),
+            'appointment_payment_status' => $this->faker->randomElement(["paid","unpaid"]),
+            'appointment_payment_mode' => $this->faker->randomElement(["online","offline"]),
             'appointment_description' => $this->faker->word(),
         ];
     }
