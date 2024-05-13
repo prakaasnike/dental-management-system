@@ -37,7 +37,7 @@ models:
     gender: enum:male,female,other
     dob: date
     years_of_experience: integer
-    address: string
+    address: string nullable
     doctor_registration_number: string nullable
     relationships:
       belongsToMany: Appointment, Specialization, Patient
@@ -46,7 +46,7 @@ models:
     doctor_id: unsignedInteger nullable
     patient_id: unsignedInteger nullable
     appointment_datetime: date
-    status: enum:booked,cancelled,completed
+    status: enum:booked,cancelled,completed,reschedule
     treatment_id: unsignedInteger nullable
     service_id: unsignedInteger nullable
     appointment_amount: decimal(10,2) nullable
@@ -62,9 +62,9 @@ models:
     total_treatment_charge_amount: decimal(10,2) nullable
     total_service_charge_amount: decimal(10,2) nullable
     total_appointment_amount_deposits: decimal(10,2) nullable
-    total_patient_remaining_amount_to_be_paid: decimal(10,2) nullable
     patient_remaining_amount: decimal(10,2)
     total_payments: decimal(10,2)
+    status: nullable enum:paid,unpaid
     relationships:
       belongsToMany: Patient, Appointment, Service
 

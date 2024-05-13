@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedInteger('doctor_id')->nullable();
             $table->unsignedInteger('patient_id')->nullable();
             $table->date('appointment_datetime');
-            $table->enum('status', ["booked","cancelled","completed"]);
+            $table->enum('status', ["booked", "cancelled", "completed", "reschedule"]);
             $table->unsignedInteger('treatment_id')->nullable();
             $table->unsignedInteger('service_id')->nullable();
             $table->string('appointment_amount')->nullable();
-            $table->enum('appointment_payment_status', ["paid","unpaid"])->nullable();
-            $table->enum('appointment_payment_mode', ["online","offline"])->nullable();
+            $table->enum('appointment_payment_status', ["paid", "unpaid"])->nullable();
+            $table->enum('appointment_payment_mode', ["online", "offline"])->nullable();
             $table->string('appointment_description')->nullable();
             $table->timestamps();
         });
