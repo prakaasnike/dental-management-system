@@ -7,10 +7,15 @@ use App\Filament\Resources\PatientResource\RelationManagers;
 use App\Models\Patient;
 use App\Models\Service;
 use App\Models\Treatment;
+//use Filament\Actions\Action;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -22,13 +27,14 @@ class PatientResource extends Resource
 {
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $model = Patient::class;
+
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
     public static function form(Form $form): Form
     {
-        $treatments = Treatment::all()->pluck('name', 'id');
-        $services = Service::all()->pluck('service_name', 'id');
+        //  $treatments = Treatment::all()->pluck('name', 'id');
+        $services = Service::all();
 
         return $form
             ->schema([
@@ -50,19 +56,21 @@ class PatientResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->email()
                             ->maxLength(255),
-                        Forms\Components\ToggleButtons::make('gender')
-                            ->required()
-                            ->inline()
+                        Forms\Components\Select::make('gender')
+                            ->placeholder('Select gender')
+                            ->native(false)
                             ->options([
                                 'male' => 'Male',
                                 'female' => 'Female',
                                 'other' => 'Other',
-                            ]),
+                            ])
+                            ->required(),
                         Forms\Components\DatePicker::make('dob')
                             ->native(false)
                             ->required(),
-                        Forms\Components\ToggleButtons::make('blood_type')
-                            ->inline()
+                        Forms\Components\Select::make('blood_type')
+                            ->placeholder('Select blood type')
+                            ->native(false)
                             ->options([
                                 'A+' => 'A+',
                                 'A-' => 'A-',
@@ -76,25 +84,48 @@ class PatientResource extends Resource
                             ]),
                         Forms\Components\TextInput::make('address')
                             ->maxLength(255),
-                        Forms\Components\Select::make('treatments')
-                            ->relationship('treatments', 'name')
-                            ->multiple()
-                            ->options($treatments),
-                        Forms\Components\Select::make('services')
-                            ->relationship('services', 'service_name')
-                            ->multiple()
-                            ->options($services),
+
                         Forms\Components\TextInput::make('initial_amount')
                             ->prefix('Rs')
                             ->maxLength(255),
+
+                        Forms\Components\Select::make('services')
+                            ->relationship('services', 'service_name')
+                            ->multiple()
+                            ->reactive()
+                            ->columnSpanFull()
+                            ->options(
+                                $services->mapWithKeys(function (Service $service) {
+                                    return [$service->id => sprintf('%s ($%s)', $service->service_name, $service->service_amount)];
+                                })
+                            )
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                // Retrieve the selected service IDs from the form data
+                                $selectedServices = $get('services');
+
+                                // Initialize total amount to 0
+                                $totalAmount = Service::whereIn('id', $selectedServices)->sum('service_amount');
+
+                                // Format the total amount to display as currency (with 2 decimal places and a decimal point)
+                                $formattedAmount = number_format($totalAmount, 2, '.', '');
+
+                                // Update the service amount field in the form with the calculated total amount
+                                $set('service_amount', $formattedAmount);
+                            }),
+                        // Forms\Components\TextInput::make('service_amount')
+                        //     ->disabled()
+                        //     ->live(true)
+                        //     ->dehydrated()
+                        //     ->prefix('Rs')
+                        //     ->numeric(),
+
                         Forms\Components\TextInput::make('medical_issues')
                             ->label('If any medical issue describe below ?')
                             ->maxLength(255)
                             ->columnSpanFull(),
-
-
                     ])
-                    ->columnSpan(2)->columns(2),
+                    ->columnSpan(2)
+                    ->columns(2),
                 Group::make()->schema([
                     Section::make("Registration Date")
                         ->schema([
@@ -124,6 +155,13 @@ class PatientResource extends Resource
                                 ->maxSize(512 * 512 * 2),
                         ]),
                 ]),
+                Group::make()
+                    ->schema([
+                        Forms\Components\Section::make('Treatment items')
+                            ->schema([
+                                static::getItemsRepeater(),
+                            ]),
+                    ])->columnSpan(['lg' => fn (?Patient $record) => $record === null ? 3 : 2]),
             ])
             ->columns([
                 'default' => 3,
@@ -132,7 +170,6 @@ class PatientResource extends Resource
                 'lg' => 3,
             ]);
     }
-
 
     public static function table(Table $table): Table
     {
@@ -144,9 +181,7 @@ class PatientResource extends Resource
                     ->label('Image')
                     ->circular()
                     ->defaultImageUrl(function ($record) {
-                        // Generate random name for the avatar
                         $name = $record->name ?: 'Unknown';
-                        // Construct the URL with the random name
                         return 'https://api.dicebear.com/8.x/initials/svg?seed=' . urlencode($name);
                     }),
                 Tables\Columns\ImageColumn::make('patient_before_image')
@@ -154,7 +189,6 @@ class PatientResource extends Resource
                     ->circular()
                     ->defaultImageUrl(function ($record) {
                         $name = $record->name ?: 'Unknown';
-                        // Use DiceBear Avatars API for generating avatars
                         return 'https://api.dicebear.com/8.x/bottts/svg?seed=' . urlencode($name);
                     }),
                 Tables\Columns\TextColumn::make('phone')
@@ -183,9 +217,7 @@ class PatientResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
@@ -193,15 +225,72 @@ class PatientResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-
             ]);
     }
 
+
+    public static function getItemsRepeater(): Repeater
+    {
+        // $treatments = Treatment::all()->pluck('name', 'id');
+        $treatments = Treatment::all();
+        return Repeater::make('treatment_id.treatment_id')
+
+            ->schema([
+                Forms\Components\Select::make('treatment_id')
+                    ->label('Treatment')
+                    ->relationship('treatments', 'name')
+                    ->multiple()
+                    ->options(
+                        $treatments->mapWithKeys(function (Treatment $treatment) {
+                            return [$treatment->id => sprintf('%s ($%s)', $treatment->name, $treatment->treatment_price)];
+                        })
+                    )
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        self::updateTreatmentPrices($get, $set);
+                    })
+                    ->required()
+                    ->reactive()
+                    ->distinct()
+                    ->disableOptionsWhenSelectedInSiblingRepeaterItems()
+                    ->columnSpan([
+                        'md' => 7,
+                    ])
+                    ->searchable(),
+                Forms\Components\TextInput::make('treatment_price')
+                    ->label('Treatment Price')
+                    ->disabled()
+                    ->live(true)
+                    ->dehydrated()
+                    ->prefix('Rs')
+                    ->numeric()
+                    ->required()
+                    ->columnSpan([
+                        'md' => 3,
+                    ]),
+            ])
+            ->defaultItems(1)
+            ->hiddenLabel()
+            ->columns([
+                'md' => 10,
+            ]);
+    }
+
+
+    public static function updateTreatmentPrices(Get $get, Set $set): void
+    {
+        $selectedTreatments = $get('treatment_id');
+
+        $subtotal = $selectedTreatments
+            ? Treatment::whereIn('id', $selectedTreatments)->sum('treatment_price')
+            : 0;
+
+        $set('treatment_price', number_format($subtotal, 2, '.', ''));
+    }
+
+
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

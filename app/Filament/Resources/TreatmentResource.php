@@ -49,6 +49,7 @@ class TreatmentResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('treatment_price')
+                    // ->numeric()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dental_treatment_description')
                     ->searchable(),

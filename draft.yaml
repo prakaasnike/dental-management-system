@@ -25,8 +25,9 @@ models:
     medical_issues: string nullable
     initial_amount: decimal:10,2
     relationships:
-      belongsToMany: Payment, Appointment, Doctor, Service, Treatment
+      belongsToMany: Payment, Appointment, Doctor, Service
       belongsTo: LabReport
+      hasMany: Treatment
 
   Doctor:
     specialization_id: unsignedInteger nullable
@@ -103,4 +104,4 @@ models:
     treatment_price: decimal(10,2)
     dental_treatment_description: string nullable
     relationships:
-      belongsToMany: Patient, Appointment
+      belongsToMany: Appointment, Patient

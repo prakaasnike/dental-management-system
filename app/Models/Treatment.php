@@ -30,13 +30,13 @@ class Treatment extends Model
         'id' => 'integer',
     ];
 
-    public function patients(): BelongsToMany
-    {
-        return $this->belongsToMany(Patient::class);
-    }
-
     public function appointments(): BelongsToMany
     {
         return $this->belongsToMany(Appointment::class);
+    }
+
+    public function patients(): BelongsToMany
+    {
+        return $this->belongsToMany(Patient::class);
     }
 }

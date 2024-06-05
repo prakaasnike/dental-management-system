@@ -9,29 +9,29 @@ created:
     - database/factories/CompletedTreatmentFactory.php
     - database/factories/SpecializationFactory.php
     - database/factories/TreatmentFactory.php
-    - database/migrations/2024_05_13_180612_create_visitors_table.php
-    - database/migrations/2024_05_13_180613_create_patients_table.php
-    - database/migrations/2024_05_13_180614_create_doctors_table.php
-    - database/migrations/2024_05_13_180615_create_appointments_table.php
-    - database/migrations/2024_05_13_180616_create_payments_table.php
-    - database/migrations/2024_05_13_180617_create_lab_reports_table.php
-    - database/migrations/2024_05_13_180618_create_services_table.php
-    - database/migrations/2024_05_13_180619_create_completed_treatments_table.php
-    - database/migrations/2024_05_13_180620_create_specializations_table.php
-    - database/migrations/2024_05_13_180621_create_treatments_table.php
-    - database/migrations/2024_05_13_180622_create_patient_payment_table.php
-    - database/migrations/2024_05_13_180623_create_appointment_patient_table.php
-    - database/migrations/2024_05_13_180624_create_doctor_patient_table.php
-    - database/migrations/2024_05_13_180625_create_patient_service_table.php
-    - database/migrations/2024_05_13_180626_create_patient_treatment_table.php
-    - database/migrations/2024_05_13_180627_create_appointment_doctor_table.php
-    - database/migrations/2024_05_13_180628_create_doctor_specialization_table.php
-    - database/migrations/2024_05_13_180629_create_appointment_payment_table.php
-    - database/migrations/2024_05_13_180630_create_appointment_service_table.php
-    - database/migrations/2024_05_13_180631_create_appointment_treatment_table.php
-    - database/migrations/2024_05_13_180632_create_payment_service_table.php
-    - database/migrations/2024_05_13_180633_create_completed_treatment_patient_table.php
-    - database/migrations/2024_05_13_180634_create_completed_treatment_doctor_table.php
+    - database/migrations/2024_05_14_165411_create_visitors_table.php
+    - database/migrations/2024_05_14_165412_create_patients_table.php
+    - database/migrations/2024_05_14_165413_create_doctors_table.php
+    - database/migrations/2024_05_14_165414_create_appointments_table.php
+    - database/migrations/2024_05_14_165415_create_payments_table.php
+    - database/migrations/2024_05_14_165416_create_lab_reports_table.php
+    - database/migrations/2024_05_14_165417_create_services_table.php
+    - database/migrations/2024_05_14_165418_create_completed_treatments_table.php
+    - database/migrations/2024_05_14_165419_create_specializations_table.php
+    - database/migrations/2024_05_14_165420_create_treatments_table.php
+    - database/migrations/2024_05_14_165421_create_patient_payment_table.php
+    - database/migrations/2024_05_14_165422_create_appointment_patient_table.php
+    - database/migrations/2024_05_14_165423_create_doctor_patient_table.php
+    - database/migrations/2024_05_14_165424_create_patient_service_table.php
+    - database/migrations/2024_05_14_165425_create_appointment_doctor_table.php
+    - database/migrations/2024_05_14_165426_create_doctor_specialization_table.php
+    - database/migrations/2024_05_14_165427_create_appointment_payment_table.php
+    - database/migrations/2024_05_14_165428_create_appointment_service_table.php
+    - database/migrations/2024_05_14_165429_create_appointment_treatment_table.php
+    - database/migrations/2024_05_14_165430_create_payment_service_table.php
+    - database/migrations/2024_05_14_165431_create_completed_treatment_patient_table.php
+    - database/migrations/2024_05_14_165432_create_completed_treatment_doctor_table.php
+    - database/migrations/2024_05_14_165433_create_patient_treatment_table.php
     - app/Models/Visitor.php
     - app/Models/Patient.php
     - app/Models/Doctor.php
@@ -45,7 +45,7 @@ created:
 models:
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable' }
     Visitor: { name: string, status: 'enum:checked_in,completed', phone: 'number required nullable', gender: 'enum:male,female,other', dob: date, description: text, visitor_date: date, visitor_payment: 'decimal:10,2' }
-    Patient: { patient_image: 'string nullable', patient_before_image: 'string required nullable', name: string, phone: 'number required', email: 'string nullable', gender: 'enum:male,female,other', dob: date, blood_type: 'nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-,None', address: 'string nullable', registered_date: date, treatment_id: 'unsignedInteger nullable', service_id: 'unsignedInteger nullable', medical_issues: 'string nullable', initial_amount: 'decimal:10,2', relationships: { belongsToMany: 'Payment, Appointment, Doctor, Service, Treatment', belongsTo: LabReport } }
+    Patient: { patient_image: 'string nullable', patient_before_image: 'string required nullable', name: string, phone: 'number required', email: 'string nullable', gender: 'enum:male,female,other', dob: date, blood_type: 'nullable enum:A+,A-,B+,B-,AB+,AB-,O+,O-,None', address: 'string nullable', registered_date: date, treatment_id: 'unsignedInteger nullable', service_id: 'unsignedInteger nullable', medical_issues: 'string nullable', initial_amount: 'decimal:10,2', relationships: { belongsToMany: 'Payment, Appointment, Doctor, Service', belongsTo: LabReport, hasMany: Treatment } }
     Doctor: { specialization_id: 'unsignedInteger nullable', doctor_image: 'string nullable', name: string, email: 'string nullable', phone: 'number required', gender: 'enum:male,female,other', dob: date, years_of_experience: integer, address: 'string nullable', doctor_registration_number: 'string nullable', relationships: { belongsToMany: 'Appointment, Specialization, Patient' } }
     Appointment: { doctor_id: 'unsignedInteger nullable', patient_id: 'unsignedInteger nullable', appointment_datetime: date, status: 'enum:booked,cancelled,completed,reschedule', treatment_id: 'unsignedInteger nullable', service_id: 'unsignedInteger nullable', appointment_amount: 'decimal(10,2) nullable', appointment_payment_status: 'nullable enum:paid,unpaid', appointment_payment_mode: 'nullable enum:online,offline', appointment_description: 'string nullable', relationships: { belongsToMany: 'Doctor, Patient, Payment, Service, Treatment' } }
     Payment: { patient_id: 'unsignedInteger nullable', appointment_id: 'unsignedInteger nullable', total_treatment_charge_amount: 'decimal(10,2) nullable', total_service_charge_amount: 'decimal(10,2) nullable', total_appointment_amount_deposits: 'decimal(10,2) nullable', patient_remaining_amount: 'decimal(10,2)', total_payments: 'decimal(10,2)', status: 'nullable enum:paid,unpaid', relationships: { belongsToMany: 'Patient, Appointment, Service' } }
@@ -53,4 +53,4 @@ models:
     Service: { service_name: string, service_amount: 'decimal(10,2)', service_description: 'string nullable', service_image: 'string nullable', relationships: { belongsToMany: 'Payment, Appointment, Patient' } }
     CompletedTreatment: { patient_id: 'unsignedInteger nullable', doctor_id: 'unsignedInteger nullable', treatment_id: string, service_id: 'unsignedInteger nullable', completed_treatment_date: 'unsignedInteger nullable', relationships: { belongsToMany: 'Patient, Doctor' } }
     Specialization: { name: string, relationships: { belongsTo: Doctor } }
-    Treatment: { name: string, treatment_price: 'decimal(10,2)', dental_treatment_description: 'string nullable', relationships: { belongsToMany: 'Patient, Appointment' } }
+    Treatment: { name: string, treatment_price: 'decimal(10,2)', dental_treatment_description: 'string nullable', relationships: { belongsToMany: 'Appointment, Patient' } }
